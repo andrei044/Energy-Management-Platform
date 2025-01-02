@@ -1,0 +1,20 @@
+version: '3'
+services:
+  react-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - CHOKIDAR_USEPOLLING=true  # Useful for file change detection on some systems
+    volumes:
+      - .:/app  # Mounts the current directory to the container for hot-reloading
+      - /app/node_modules  # Ensures local node_modules don't interfere
+    networks:
+      demo_net:
+        ipv4_address: 172.30.0.15
+    ports:
+      - "3000:3000"  # Maps container port 3000 to host port 3000
+
+networks:
+  demo_net:
+    external: true
