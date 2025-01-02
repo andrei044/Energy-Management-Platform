@@ -117,7 +117,7 @@ services:
       - "traefik.http.services.monitoring-service.loadbalancer.sticky.cookie=true"
   react-app:
     build:
-      context: ./frontend_sd
+      context: .././frontend_sd
       dockerfile: ./Dockerfile
     ports:
       - "3000:443"
