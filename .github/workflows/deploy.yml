@@ -60,3 +60,26 @@ jobs:
 
           docker tag ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service:latest
           docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service:latest
+          
+      # Step 6: Deploy to Azure VM
+      - name: Deploy to Azure VM
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
+          chmod 600 private_key.pem
+
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }} << 'EOF'
+            # Log in to Azure Container Registry
+            az acr login --name ds2024registry
+
+            # Pull latest images
+            docker pull ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_chat-service:latest
+            docker pull ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_users-service:latest
+            docker pull ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_react-app:latest
+            docker pull ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_devices-service:latest
+            docker pull ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service:latest
+
+            # Restart services with docker-compose
+            cd /path/to/your/docker-compose-directory
+            docker-compose down
+            docker-compose up -d
+          EOF
