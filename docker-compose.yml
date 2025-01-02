@@ -146,7 +146,7 @@ services:
       - "80:80"
     networks:
       demo_net:
-        ipv4_address: 172.30.0.8
+        # ipv4_address: 172.30.0.8
       frontend_net:
   chat-service:
     build:

@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { makeRequestToDevice, createWs, makeRequestToMonitoring  } from '../api/api';
+import { makeRequestToDevice, createWs, makeRequestToMonitoring, ACTION_MESSAGE, ACTION_TYPING,ACTION_SEEN  } from '../api/api';
 import {NotificationContainer, NotificationManager} from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 import dayjs from "dayjs";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { TextField, Box } from "@mui/material";
+import Chat from '../admin/Chat';
 
 
 const Client = () => {
@@ -102,6 +103,16 @@ const Client = () => {
         setSelectedDate(event.target.value);
     };
 
+    const notifyFunc = (msg) =>{
+        if(msg.action==ACTION_MESSAGE){
+            NotificationManager.info(`New message from ${msg.sender}`);
+        }else if(msg.action==ACTION_SEEN){
+            NotificationManager.info(`Message seen from ${msg.sender}`);
+        }else if(msg.action==ACTION_TYPING){
+            //nothing
+        }
+    }
+
     // Render loading, error, or devices
     if (loading) return <div>Loading devices...</div>;
     // if (error) return <div>Error: {error}</div>;
@@ -167,6 +178,8 @@ const Client = () => {
                 width={500}
                 height={300}
             />
+            <h2>CHAT WITH ADMIN</h2>
+            <Chat notifyFunc={notifyFunc} admin={false} ></Chat>
             <NotificationContainer/>
         </div>
     );

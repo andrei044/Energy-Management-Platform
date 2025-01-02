@@ -11,21 +11,40 @@ const Login = () => {
     
     const handleLogin = async (e) => {
       e.preventDefault();
-  
-      // Create a new FormData object
-      const formData = new FormData();
-      formData.append('username', username);
-      formData.append('password', password);
+      localStorage.clear();
+
+      const loginData={
+        "username":username,
+        "password":password
+      }
   
       try {
-        const response = await makeRequestToUser('/login', 'POST', formData, {
-          'Content-Type': 'multipart/form-data',
-        });
-        console.log(document.cookie)
-        if(document.cookie.split("=")[1]=="ROLE_ADMIN")
-            navigate("/admin")
-        else
-            navigate("/client")
+        const token = await makeRequestToUser('/login', 'POST', loginData);
+        console.log(token)
+        if (!token) throw new Error("Token not found in response");
+        // Decode the Base64 token
+        // Split the token into parts
+        const parts = token.split('.');
+        // The payload is the second part
+        const payload = parts[1];
+
+        // Decode the Base64URL payload
+        const decodedPayload = JSON.parse(atob(payload));
+        console.log(decodedPayload)
+        const role = decodedPayload.role; // Adjust based on the token's structure
+
+        localStorage.setItem("username",decodedPayload.sub)
+        localStorage.setItem("token",token)
+        localStorage.setItem("role",role)
+        
+        // Navigate based on the role
+        if (role === "ROLE_ADMIN") {
+          navigate("/admin");
+        } else if (role === "ROLE_CLIENT") {
+            navigate("/client");
+        } else {
+            throw new Error("Unknown role in token");
+        }
       } catch (error) {
         console.error('Login error:', error);
         alert('Login failed. Please try again.');

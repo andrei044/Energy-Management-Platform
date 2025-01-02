@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { makeRequestToDevice, makeRequestToUser } from '../api/api';
+import { makeRequestToDevice, makeRequestToUser, ACTION_MESSAGE, ACTION_TYPING,ACTION_SEEN} from '../api/api';
+import Chat from './Chat';
+import {NotificationContainer, NotificationManager} from 'react-notifications';
 
 const Admin = () => {
     const [devices, setDevices] = useState([]);
@@ -34,6 +36,7 @@ const Admin = () => {
     };
 
     const fetchUsers = async () => {
+        const token = localStorage.getItem("token");
         try {
             const data = await makeRequestToUser('/user', 'GET'); 
             console.log(data);
@@ -44,6 +47,16 @@ const Admin = () => {
             setLoading(false);
         }
     };
+
+    const notifyFunc = (msg) =>{
+        if(msg.action==ACTION_MESSAGE){
+            NotificationManager.info(`New message from ${msg.sender}`);
+        }else if(msg.action==ACTION_SEEN){
+            NotificationManager.info(`Message seen from ${msg.sender}`);
+        }else if(msg.action==ACTION_TYPING){
+            //nothing
+        }
+    }
 
     // Use useEffect to fetch devices and users on component mount
     useEffect(() => {
@@ -173,6 +186,7 @@ const Admin = () => {
         );
     };
 
+    
     // Render loading, error, or devices
     if (loading) return <div>Loading devices...</div>;
     if (error) return <div>Error: {error}</div>;
@@ -316,6 +330,9 @@ const Admin = () => {
                 <button onClick={handleUpdateDevice}>Update Device</button>
                 <button onClick={handleDeleteDevice}>Delete</button>
             </div>
+            <h2>SUPPORT CHAT</h2>
+            <Chat notifyFunc={notifyFunc} admin={true} ></Chat>
+            <NotificationContainer/>
         </div>
     );
 };
