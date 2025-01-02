@@ -175,7 +175,8 @@ volumes:
 
 networks:
   demo_net:
-    external: true
+    # external: true
+    driver: bridge
   users_net:
     driver: bridge
   devices_net:
