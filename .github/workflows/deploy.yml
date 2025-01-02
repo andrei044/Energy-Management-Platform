@@ -40,6 +40,7 @@ jobs:
       - name: Build and push Docker images
         run: |
           # Build images using docker-compose and tag with "latest"
+          ls /home/runner/work/ds2024_30641_constantin_andreibogdan_assignment_3/ds2024_30641_constantin_andreibogdan_assignment_3
           docker-compose up -d --build
 
           # Tag the images with the correct registry and push them
