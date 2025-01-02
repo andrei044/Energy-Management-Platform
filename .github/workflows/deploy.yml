@@ -41,7 +41,7 @@ jobs:
         run: |
           # Build images using docker-compose and tag with "latest"
           ls /home/runner/work/ds2024_30641_constantin_andreibogdan_assignment_3/ds2024_30641_constantin_andreibogdan_assignment_3
-          docker-compose up -d --no-cache
+          docker-compose build --no-cache
 
           # Tag the images with the correct registry and push them
           docker tag ds2024_30641_constantin_andreibogdan_assignment_3-chat-service:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3-chat-service:latest
