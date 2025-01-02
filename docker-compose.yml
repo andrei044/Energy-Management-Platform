@@ -118,7 +118,7 @@ services:
   react-app:
     build:
       context: ./frontend_sd
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile
     ports:
       - "3000:443"
     networks:
