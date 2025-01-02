@@ -60,7 +60,8 @@ jobs:
 
           docker tag ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service:latest
           docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service:latest
-          
+      
+      
       # Step 6: Deploy to Azure VM
       - name: Deploy to Azure VM
         run: |
