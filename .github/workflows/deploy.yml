@@ -29,3 +29,25 @@ jobs:
           login-server: ds2024registry.azurecr.io
           username: ${{ secrets.AZURE_USERNAME }}
           password: ${{ secrets.AZURE_PASSWORD }}
+      
+      # Step 5: Build and push all Docker images using docker-compose
+      - name: Build and push Docker images
+        run: |
+          # Build images using docker-compose and tag with "latest"
+          docker-compose -f docker-compose.yml build --no-cache
+
+          # Tag the images with the correct registry and push them
+          docker tag ds2024_30641_constantin_andreibogdan_assignment_3-chat-service:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3-chat-service:latest
+          docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3-chat-service:latest
+
+          docker tag ds2024_30641_constantin_andreibogdan_assignment_3-users-service:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3-users-service:latest
+          docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3-users-service:latest
+
+          docker tag ds2024_30641_constantin_andreibogdan_assignment_3-react-app:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3-react-app:latest
+          docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3-react-app:latest
+
+          docker tag ds2024_30641_constantin_andreibogdan_assignment_3-devices-service:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3-devices-service:latest
+          docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3-devices-service:latest
+
+          docker tag ds2024_30641_constantin_andreibogdan_assignment_3-monitorng-service:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3-monitorng-service:latest
+          docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3-monitorng-service:latest
