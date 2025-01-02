@@ -50,7 +50,7 @@ jobs:
           docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_chat-service:latest
 
           docker tag ds2024_30641_constantin_andreibogdan_assignment_3_users-service:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_users-service:latest
-          docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3-users-service:latest
+          docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_users-service:latest
 
           docker tag ds2024_30641_constantin_andreibogdan_assignment_3_react-app:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_react-app:latest
           docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_react-app:latest
