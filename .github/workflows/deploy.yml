@@ -40,7 +40,7 @@ jobs:
       - name: Build and push Docker images
         run: |
           # Build images using docker-compose and tag with "latest"
-          docker-compose -f docker-compose.yml build --no-cache
+          docker-compose up -d --build
 
           # Tag the images with the correct registry and push them
           # docker tag ds2024_30641_constantin_andreibogdan_assignment_3-chat-service:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3-chat-service:latest
