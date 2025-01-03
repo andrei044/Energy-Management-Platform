@@ -66,7 +66,7 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
           chmod 600 private_key.pem
 
-          scp -i private_key.pem /home/runner/work/ds2024_30641_constantin_andreibogdan_assignment_3/ds2024_30641_constantin_andreibogdan_assignment_3/docker-compose-vm.yml ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }}:/home/${{ secrets.VM_USERNAME }}
+          scp -o StrictHostKeyChecking=no -i private_key.pem /home/runner/work/ds2024_30641_constantin_andreibogdan_assignment_3/ds2024_30641_constantin_andreibogdan_assignment_3/docker-compose-vm.yml ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }}:/home/${{ secrets.VM_USERNAME }}
 
           ssh -o StrictHostKeyChecking=no -i private_key.pem ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }} << 'EOF'
             # Log in to Azure Container Registry
