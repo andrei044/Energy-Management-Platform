@@ -73,11 +73,15 @@ jobs:
             az acr login --name ds2024registry --username ${{ secrets.AZURE_USERNAME }} --password ${{ secrets.AZURE_PASSWORD }}
 
             # Pull latest images
-            docker pull ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_chat-service:latest
-            docker pull ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_users-service:latest
-            docker pull ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_react-app:latest
-            docker pull ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_devices-service:latest
-            docker pull ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service:latest
+            docker pull --force ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_chat-service:latest
+            az acr login --name ds2024registry --username ${{ secrets.AZURE_USERNAME }} --password ${{ secrets.AZURE_PASSWORD }}
+            docker pull --force ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_users-service:latest
+            az acr login --name ds2024registry --username ${{ secrets.AZURE_USERNAME }} --password ${{ secrets.AZURE_PASSWORD }}
+            docker pull --force ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_react-app:latest
+            az acr login --name ds2024registry --username ${{ secrets.AZURE_USERNAME }} --password ${{ secrets.AZURE_PASSWORD }}
+            docker pull --force ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_devices-service:latest
+            az acr login --name ds2024registry --username ${{ secrets.AZURE_USERNAME }} --password ${{ secrets.AZURE_PASSWORD }}
+            docker pull --force ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service:latest
 
             docker ps -q | xargs -r docker stop
 
