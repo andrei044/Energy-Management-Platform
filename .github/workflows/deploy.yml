@@ -66,6 +66,8 @@ jobs:
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > private_key.pem
           chmod 600 private_key.pem
 
+          scp -i private_key.pem /home/runner/work/ds2024_30641_constantin_andreibogdan_assignment_3/ds2024_30641_constantin_andreibogdan_assignment_3/docker-compose-vm.yml ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }}:/home/${{ secrets.VM_USERNAME }}
+
           ssh -o StrictHostKeyChecking=no -i private_key.pem ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }} << 'EOF'
             # Log in to Azure Container Registry
             az acr login --name ds2024registry --username ${{ secrets.AZURE_USERNAME }} --password ${{ secrets.AZURE_PASSWORD }}
@@ -79,10 +81,15 @@ jobs:
 
             docker ps -q | xargs -r docker stop
 
+            
+
+            cd /home/${{ secrets.AZURE_USERNAME }}
+            docker-compose up -d
+
             # Restart services with docker-compose
-            docker run -d ds2024_30641_constantin_andreibogdan_assignment_3_chat-service:latest
-            docker run -d ds2024_30641_constantin_andreibogdan_assignment_3_users-service:latest
-            docker run -d ds2024_30641_constantin_andreibogdan_assignment_3_react-app:latest
-            docker run -d ds2024_30641_constantin_andreibogdan_assignment_3_devices-service:latest
-            docker run -d ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service:latest
+            # docker run -d ds2024_30641_constantin_andreibogdan_assignment_3_chat-service:latest
+            # docker run -d ds2024_30641_constantin_andreibogdan_assignment_3_users-service:latest
+            # docker run -d ds2024_30641_constantin_andreibogdan_assignment_3_react-app:latest
+            # docker run -d ds2024_30641_constantin_andreibogdan_assignment_3_devices-service:latest
+            # docker run -d ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service:latest
           EOF

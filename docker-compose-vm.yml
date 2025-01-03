@@ -1,0 +1,178 @@
+version: '2'
+
+services:
+  users-db:
+    image: mysql
+    restart: always
+    environment: 
+      MYSQL_DATABASE: usersdb
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - users-db:/var/lib/mysql
+    networks:
+      users_net:
+
+  users-service:
+    image: ds2024_30641_constantin_andreibogdan_assignment_3_users-service
+    depends_on:
+      - users-db
+    environment:
+      - DB_IP=users-db
+      - DB_PORT=3306
+      - DB_DBNAME=usersdb
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DEVICE_SERVICE_URL=http://reverse-proxy/devices-service
+      - PORT=8080
+      - X_API_KEY=1234567890
+    deploy:
+      replicas: 2
+    networks:
+      users_net:
+      demo_net:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.users-service.rule=Host(`users-service.localhost`) || PathPrefix(`/users-service`)"
+      - "traefik.http.middlewares.users-service-strip.stripprefix.prefixes=/users-service"
+      - "traefik.http.routers.users-service.middlewares=users-service-strip"
+      - "traefik.http.services.users-service.loadbalancer.server.port=8080"
+      - "traefik.http.services.users-service.loadbalancer.sticky.cookie=true"
+
+  devices-db:
+    image: mysql
+    restart: always
+    environment: 
+      MYSQL_DATABASE: devicesdb
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - devices-db:/var/lib/mysql
+    networks:
+      devices_net:
+
+  devices-service:
+    image: ds2024_30641_constantin_andreibogdan_assignment_3_devices-service
+    depends_on:
+      - devices-db
+      - users-service
+    environment:
+      - DB_IP=devices-db
+      - DB_PORT=3306
+      - DB_DBNAME=devicesdb
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - USER_SERVICE_URL=http://reverse-proxy/users-service
+      - PORT=8080
+      - X_API_KEY=1234567890
+    deploy:
+      replicas: 2
+    networks:
+      devices_net:
+      demo_net:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.devices-service.rule=Host(`devices-service.localhost`) || PathPrefix(`/devices-service`)"
+      - "traefik.http.middlewares.devices-service-strip.stripprefix.prefixes=/devices-service"
+      - "traefik.http.routers.devices-service.middlewares=devices-service-strip"
+      - "traefik.http.services.devices-service.loadbalancer.server.port=8080"
+      - "traefik.http.services.devices-service.loadbalancer.sticky.cookie=true"
+
+  monitoring-db:
+    image: mysql
+    restart: always
+    environment: 
+      MYSQL_DATABASE: monitoringdb
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - monitoring-db:/var/lib/mysql
+    networks:
+      monitoring_net:
+
+  monitoring-service:
+    image: ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service
+    depends_on:
+      - monitoring-db
+    environment:
+      - DB_IP=monitoring-db
+      - DB_PORT=3306
+      - DB_DBNAME=monitoringdb
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - USER_SERVICE_URL=http://reverse-proxy/users-service
+      - PORT=8081
+    networks:
+      monitoring_net:
+      demo_net:
+    deploy:
+      replicas: 2
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.monitoring-service.rule=Host(`monitoring-service.localhost`) || PathPrefix(`/monitoring-service`)"
+      - "traefik.http.middlewares.monitoring-service-strip.stripprefix.prefixes=/monitoring-service"
+      - "traefik.http.routers.monitoring-service.middlewares=monitoring-service-strip"
+      - "traefik.http.services.monitoring-service.loadbalancer.server.port=8081"
+      - "traefik.http.services.monitoring-service.loadbalancer.sticky.cookie=true"
+
+  react-app:
+    image: ds2024_30641_constantin_andreibogdan_assignment_3_react-app
+    ports:
+      - "3000:443"
+    networks:
+      frontend_net:
+    volumes:
+      - ./frontend_sd/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./frontend_sd/ssl/nginx.crt:/etc/ssl/certs/nginx.crt
+      - ./frontend_sd/ssl/nginx.key:/etc/ssl/private/nginx.key
+
+  reverse-proxy:
+    image: traefik:v3.2
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      - --accesslog=true
+      - --accesslog.filepath=/var/log/traefik/access.log
+      - --log.level=DEBUG
+      - --entrypoints.web.address=:80
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - traefik_logs:/var/log/traefik
+    ports:
+      - "8083:8080"
+      - "80:80"
+    networks:
+      demo_net:
+      frontend_net:
+
+  chat-service:
+    image: ds2024_30641_constantin_andreibogdan_assignment_3_chat-service
+    environment:
+      - USER_SERVICE_URL=http://reverse-proxy/users-service
+      - PORT=8080
+    networks:
+      demo_net:
+    deploy:
+      replicas: 1
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.chat-service.rule=Host(`chat-service.localhost`) || PathPrefix(`/chat-service`)"
+      - "traefik.http.middlewares.chat-service-strip.stripprefix.prefixes=/chat-service"
+      - "traefik.http.routers.chat-service.middlewares=chat-service-strip"
+      - "traefik.http.services.chat-service.loadbalancer.server.port=8080"
+      - "traefik.http.services.chat-service.loadbalancer.sticky.cookie=true"
+
+volumes:
+  users-db:
+  devices-db:
+  monitoring-db:
+  traefik_logs:
+
+networks:
+  demo_net:
+    driver: bridge
+  users_net:
+    driver: bridge
+  devices_net:
+    driver: bridge
+  monitoring_net:
+    driver: bridge
+  frontend_net:
+    driver: bridge
