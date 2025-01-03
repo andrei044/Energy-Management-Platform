@@ -137,7 +137,7 @@ services:
       - traefik_logs:/var/log/traefik
     ports:
       - "8083:8080"
-      - "80:80"
+      # - "80:80"
     networks:
       demo_net:
       frontend_net:

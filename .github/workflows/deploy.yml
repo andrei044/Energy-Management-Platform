@@ -84,6 +84,7 @@ jobs:
             docker pull ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service:latest
 
             docker ps -q | xargs -r docker stop
+            
 
             ls -l
 
