@@ -83,7 +83,7 @@ jobs:
 
             
 
-            cd /home/${{ secrets.AZURE_USERNAME }}
+            cd /home/${{ secrets.VM_USERNAME }}
             ll
             docker-compose up -d
             mv docker-compose-vm.yml docker-compose.yml
