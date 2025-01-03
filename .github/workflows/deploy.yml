@@ -40,7 +40,7 @@ jobs:
       - name: Build and push Docker images
         run: |
           # Build images using docker-compose and tag with "latest"
-          # docker-compose build --no-cache
+          docker-compose build --no-cache
 
           # docker images
 
@@ -51,8 +51,8 @@ jobs:
           # docker tag ds2024_30641_constantin_andreibogdan_assignment_3_users-service:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_users-service:latest
           # docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_users-service:latest
 
-          # docker tag ds2024_30641_constantin_andreibogdan_assignment_3_react-app:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_react-app:latest
-          # docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_react-app:latest
+          docker tag ds2024_30641_constantin_andreibogdan_assignment_3_react-app:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_react-app:latest
+          docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_react-app:latest
 
           # docker tag ds2024_30641_constantin_andreibogdan_assignment_3_devices-service:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_devices-service:latest
           # docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_devices-service:latest
