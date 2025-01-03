@@ -77,7 +77,7 @@ jobs:
             docker pull ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_devices-service:latest
             docker pull ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service:latest
 
-            docker stop $(docker ps -a -q)
+            docker ps -q | xargs -r docker stop
 
             # Restart services with docker-compose
             docker run -d ds2024_30641_constantin_andreibogdan_assignment_3_chat-service:latest
