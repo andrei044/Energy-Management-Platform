@@ -13,7 +13,7 @@ services:
       users_net:
 
   users-service:
-    image: ds2024_30641_constantin_andreibogdan_assignment_3_users-service
+    image: ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_users-service
     depends_on:
       - users-db
     environment:
@@ -50,7 +50,7 @@ services:
       devices_net:
 
   devices-service:
-    image: ds2024_30641_constantin_andreibogdan_assignment_3_devices-service
+    image: ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_devices-service
     depends_on:
       - devices-db
       - users-service
@@ -88,7 +88,7 @@ services:
       monitoring_net:
 
   monitoring-service:
-    image: ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service
+    image: ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service
     depends_on:
       - monitoring-db
     environment:
@@ -113,7 +113,7 @@ services:
       - "traefik.http.services.monitoring-service.loadbalancer.sticky.cookie=true"
 
   react-app:
-    image: ds2024_30641_constantin_andreibogdan_assignment_3_react-app
+    image: ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_react-app
     ports:
       - "3000:443"
     networks:
@@ -143,7 +143,7 @@ services:
       frontend_net:
 
   chat-service:
-    image: ds2024_30641_constantin_andreibogdan_assignment_3_chat-service
+    image: ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_chat-service
     environment:
       - USER_SERVICE_URL=http://reverse-proxy/users-service
       - PORT=8080
