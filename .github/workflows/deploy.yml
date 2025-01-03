@@ -68,19 +68,19 @@ jobs:
 
           scp -o StrictHostKeyChecking=no -i private_key.pem /home/runner/work/ds2024_30641_constantin_andreibogdan_assignment_3/ds2024_30641_constantin_andreibogdan_assignment_3/docker-compose-vm.yml ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }}:/home/${{ secrets.VM_USERNAME }}
 
+          scp -o StrictHostKeyChecking=no -i private_key.pem /home/runner/work/ds2024_30641_constantin_andreibogdan_assignment_3/ds2024_30641_constantin_andreibogdan_assignment_3/frontend-sd/nginx.conf ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }}:/etc/nginx/conf.d/default.conf
+          scp -o StrictHostKeyChecking=no -i private_key.pem /home/runner/work/ds2024_30641_constantin_andreibogdan_assignment_3/ds2024_30641_constantin_andreibogdan_assignment_3/frontend-sd/ssl/nginx.crt ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }}:/etc/ssl/certs/nginx.crt
+          scp -o StrictHostKeyChecking=no -i private_key.pem /home/runner/work/ds2024_30641_constantin_andreibogdan_assignment_3/ds2024_30641_constantin_andreibogdan_assignment_3/frontend-sd/ssl/nginx.key ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }}:/etc/ssl/private/nginx.key
+
           ssh -o StrictHostKeyChecking=no -i private_key.pem ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }} << 'EOF'
             # Log in to Azure Container Registry
             az acr login --name ds2024registry --username ${{ secrets.AZURE_USERNAME }} --password ${{ secrets.AZURE_PASSWORD }}
 
             # Pull latest images
             docker pull ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_chat-service:latest
-            az acr login --name ds2024registry --username ${{ secrets.AZURE_USERNAME }} --password ${{ secrets.AZURE_PASSWORD }}
             docker pull ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_users-service:latest
-            az acr login --name ds2024registry --username ${{ secrets.AZURE_USERNAME }} --password ${{ secrets.AZURE_PASSWORD }}
             docker pull ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_react-app:latest
-            az acr login --name ds2024registry --username ${{ secrets.AZURE_USERNAME }} --password ${{ secrets.AZURE_PASSWORD }}
             docker pull ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_devices-service:latest
-            az acr login --name ds2024registry --username ${{ secrets.AZURE_USERNAME }} --password ${{ secrets.AZURE_PASSWORD }}
             docker pull ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service:latest
 
             # docker ps -q | xargs -r docker stop
