@@ -68,7 +68,7 @@ jobs:
 
           ssh -o StrictHostKeyChecking=no -i private_key.pem ${{ secrets.VM_USERNAME }}@${{ secrets.VM_IP }} << 'EOF'
             # Log in to Azure Container Registry
-            az acr login --name ds2024registry
+            az acr login --name ds2024registry --username ${{ secrets.AZURE_USERNAME }} --password ${{ secrets.AZURE_PASSWORD }}
 
             # Pull latest images
             docker pull ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_chat-service:latest
