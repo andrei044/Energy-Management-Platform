@@ -115,7 +115,7 @@ services:
   react-app:
     image: ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_react-app
     ports:
-      - "443:443"
+      - "3000:443"
     networks:
       frontend_net:
     volumes:
