@@ -81,10 +81,11 @@ jobs:
 
             docker ps -q | xargs -r docker stop
 
-            
+            ls -l
 
             cd /home/${{ secrets.VM_USERNAME }}
             mv docker-compose-vm.yml docker-compose.yml
+            docker-compose down -v --remove-orphans
             docker-compose up -d --build --force-recreate --remove-orphans
 
             # Restart services with docker-compose
