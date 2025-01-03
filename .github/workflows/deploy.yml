@@ -85,6 +85,7 @@ jobs:
 
             docker ps -q | xargs -r docker stop
             
+            
             ls -l
 
             cd /home/${{ secrets.VM_USERNAME }}
