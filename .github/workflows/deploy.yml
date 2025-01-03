@@ -40,26 +40,25 @@ jobs:
       - name: Build and push Docker images
         run: |
           # Build images using docker-compose and tag with "latest"
-          # ls /home/runner/work/ds2024_30641_constantin_andreibogdan_assignment_3/ds2024_30641_constantin_andreibogdan_assignment_3
-          docker-compose build --no-cache
+          # docker-compose build --no-cache
 
-          docker images
+          # docker images
 
-          # Tag the images with the correct registry and push them
-          docker tag ds2024_30641_constantin_andreibogdan_assignment_3_chat-service:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_chat-service:latest
-          docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_chat-service:latest
+          # # Tag the images with the correct registry and push them
+          # docker tag ds2024_30641_constantin_andreibogdan_assignment_3_chat-service:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_chat-service:latest
+          # docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_chat-service:latest
 
-          docker tag ds2024_30641_constantin_andreibogdan_assignment_3_users-service:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_users-service:latest
-          docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_users-service:latest
+          # docker tag ds2024_30641_constantin_andreibogdan_assignment_3_users-service:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_users-service:latest
+          # docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_users-service:latest
 
-          docker tag ds2024_30641_constantin_andreibogdan_assignment_3_react-app:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_react-app:latest
-          docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_react-app:latest
+          # docker tag ds2024_30641_constantin_andreibogdan_assignment_3_react-app:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_react-app:latest
+          # docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_react-app:latest
 
-          docker tag ds2024_30641_constantin_andreibogdan_assignment_3_devices-service:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_devices-service:latest
-          docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_devices-service:latest
+          # docker tag ds2024_30641_constantin_andreibogdan_assignment_3_devices-service:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_devices-service:latest
+          # docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_devices-service:latest
 
-          docker tag ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service:latest
-          docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service:latest
+          # docker tag ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service:latest ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service:latest
+          # docker push ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service:latest
       
       # Step 6: Deploy to Azure VM
       - name: Deploy to Azure VM
@@ -78,8 +77,12 @@ jobs:
             docker pull ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_devices-service:latest
             docker pull ds2024registry.azurecr.io/ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service:latest
 
+            docker stop $(docker ps -a -q)
+
             # Restart services with docker-compose
-            cd /path/to/your/docker-compose-directory
-            docker-compose down
-            docker-compose up -d
+            docker run -d ds2024_30641_constantin_andreibogdan_assignment_3_chat-service:latest
+            docker run -d ds2024_30641_constantin_andreibogdan_assignment_3_users-service:latest
+            docker run -d ds2024_30641_constantin_andreibogdan_assignment_3_react-app:latest
+            docker run -d ds2024_30641_constantin_andreibogdan_assignment_3_devices-service:latest
+            docker run -d ds2024_30641_constantin_andreibogdan_assignment_3_monitoring-service:latest
           EOF
