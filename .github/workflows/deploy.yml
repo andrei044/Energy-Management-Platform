@@ -8,9 +8,6 @@ on:
 jobs:
   build_and_deploy:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        service: [user-microservice, chat-microservice, device-microservice, monitoring-microservice]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -21,9 +18,15 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       
-      - name: Run Maven tests for ${{ matrix.service }}
+      - name: Run Maven tests for microservices
         run: |
-          cd ${{ matrix.service }}
+          cd /home/runner/work/ds2024_30641_constantin_andreibogdan_assignment_3/ds2024_30641_constantin_andreibogdan_assignment_3/user-microservice
+          mvn clean test
+          cd /home/runner/work/ds2024_30641_constantin_andreibogdan_assignment_3/ds2024_30641_constantin_andreibogdan_assignment_3/chat-microservice
+          mvn clean test
+          cd /home/runner/work/ds2024_30641_constantin_andreibogdan_assignment_3/ds2024_30641_constantin_andreibogdan_assignment_3/device-microservice
+          mvn clean test
+          cd /home/runner/work/ds2024_30641_constantin_andreibogdan_assignment_3/ds2024_30641_constantin_andreibogdan_assignment_3/monitoring-microservice
           mvn clean test
 
       - name: Set up Docker Buildx
