@@ -107,7 +107,7 @@ services:
       demo_net:
         # ipv4_address: 172.30.0.5
     deploy:
-      replicas: 2
+      replicas: 1
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.monitoring-service.rule=Host(`monitoring-service.localhost`) || PathPrefix(`/monitoring-service`)"

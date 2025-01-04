@@ -51,7 +51,7 @@ public class AuthController {
         String username = jwtService.extractUsername(token);
         UserDTO user = service.getUserByName(username);
         User userDetails = UserBuilder.toEntity(user);
-        ;
+
         if (username != null && jwtService.validateToken(token, userDetails)) {
             log.info("User: " + username + " has been validated!");
             return ResponseEntity.ok(DeviceUserBuilder.toUserDTO(user));
