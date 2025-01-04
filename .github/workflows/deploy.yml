@@ -20,7 +20,7 @@ jobs:
       
       - name: Run Maven tests for microservices
         run: |
-        sleep 10
+          sleep 10
           cd /home/runner/work/ds2024_30641_constantin_andreibogdan_assignment_3/ds2024_30641_constantin_andreibogdan_assignment_3/user-microservice
           mvn clean test
           cd /home/runner/work/ds2024_30641_constantin_andreibogdan_assignment_3/ds2024_30641_constantin_andreibogdan_assignment_3/chat-microservice
